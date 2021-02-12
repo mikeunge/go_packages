@@ -35,7 +35,11 @@ func GetInstance() (*Logger, error) {
 	var err error
 
 	once.Do(func() {
-		logger, err = createLogger()
+		settings, err := initLogger()
+		if err != nil {
+			return
+		}
+		logger, err = createLogger(settings)
 	})
 	if err != nil {
 		return logger, err
@@ -83,12 +87,7 @@ func initLogger() (*Settings, error) {
 	return &Settings{logLevel, logFormat, logOutput, logPath}, nil
 }
 
-func createLogger() (*Logger, error) {
-	// gather all the settings from environment
-	settings, err := initLogger()
-	if err != nil {
-		return logger, err
-	}
+func createLogger(settings *Settings) (*Logger, error) {
 	log := logrus.New() // create new logrus instance
 
 	// after gathering the environment info, apply it
