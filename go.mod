@@ -1,4 +1,4 @@
-module test_imports
+module github.com/mikeunge/go_packages
 
 go 1.15
 
